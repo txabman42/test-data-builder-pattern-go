@@ -33,7 +33,7 @@ func (n Name) Validate() error {
 type Age int
 
 func (a Age) Validate() error {
-	if a <= 0 {
+	if a < 0 {
 		return fmt.Errorf("%w with value %d", ValidationError, a)
 	}
 	return nil
@@ -56,6 +56,14 @@ func (o *Owner) Validate() error {
 		return err
 	}
 	return nil
+}
+
+func NewOwner(name string, age Age) *Owner {
+	return &Owner{
+		ID:   ID(uuid.New().String()),
+		Name: Name(name),
+		Age:  age,
+	}
 }
 
 type Pet struct {
@@ -82,4 +90,13 @@ func (p *Pet) Validate() error {
 		}
 	}
 	return nil
+}
+
+func NewPet(name string, age Age, owner Owner) *Pet {
+	return &Pet{
+		ID:    ID(uuid.New().String()),
+		Name:  Name(name),
+		Age:   age,
+		Owner: &owner,
+	}
 }
